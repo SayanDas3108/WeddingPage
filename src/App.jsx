@@ -16,47 +16,81 @@ export default function App() {
     message: "",
   });
 
-  // Auto toggle between bride and groom photo every 2 seconds
+  // 💕 Toggle bride & groom every 2 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setShowBride((prev) => !prev);
-    }, 2000);
+    const interval = setInterval(() => setShowBride((prev) => !prev), 2000);
     return () => clearInterval(interval);
   }, []);
 
+  // 🎵 Handle autoplay after first user click
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (audioRef.current && !musicPlaying) {
+        audioRef.current
+          .play()
+          .then(() => setMusicPlaying(true))
+          .catch((err) => console.log("Autoplay blocked:", err));
+      }
+      window.removeEventListener("click", handleUserInteraction);
+    };
+
+    
+
+    window.addEventListener("click", handleUserInteraction);
+    return () => window.removeEventListener("click", handleUserInteraction);
+  }, []);
+
+  // 🎶 Toggle music manually
+  function toggleMusic(e) {
+    e.stopPropagation();
+    if (!audioRef.current) return;
+    if (musicPlaying) {
+      audioRef.current.pause();
+      setMusicPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setMusicPlaying(true))
+        .catch((err) => console.log("Error playing:", err));
+    }
+  }
+
+  // 💌 Handle RSVP submit
   function submitRsvp(e) {
     e.preventDefault();
     setRsvpSent(true);
     setTimeout(() => {
       setRsvpOpen(false);
       setRsvpSent(false);
-      setForm({ name: "", email: "", attending: "yes", guests: 1, message: "" });
+      setForm({
+        name: "",
+        email: "",
+        attending: "yes",
+        guests: 1,
+        message: "",
+      });
     }, 1600);
-  }
-
-  function toggleMusic() {
-    if (!audioRef.current) return;
-    if (musicPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setMusicPlaying(!musicPlaying);
   }
 
   return (
     <div className="page">
-      <header className="nav">
-        <div className="brand">
-          <span className="ring" style={{ fontSize: "2.5rem" }}>💍</span>
-          <div>
-            <div className="names" style={{ fontSize: "2.5rem", fontWeight: "800" }}>
-              XMEN & Riya
-            </div>
-            <div className="date">December 15, 2025</div>
-          </div>
+      {/* 💍 Updated Elegant Header */}
+      <header className="full-header">
+        {/* Left: Date & Time */}
+        <div className="header-left">
+          <div className="date-text">December 15, 2025</div>
+          <div className="time-text">9:00 AM 💐</div>
         </div>
-        <nav className="nav-links">
+
+        {/* Center: Couple Names */}
+        <div className="header-center">
+          <span className="ring">💍</span>
+          <h1 className="couple-names">XMEN <span className="and">&</span> Riya</h1>
+          <div className="subtext">Weds</div>
+        </div>
+
+        {/* Right: Navigation */}
+        <nav className="header-right">
           <a href="#story">Our Story</a>
           <a href="#event">Event</a>
           <a href="#gallery">Gallery</a>
@@ -64,6 +98,7 @@ export default function App() {
         </nav>
       </header>
 
+      {/* 🌸 Hero Section */}
       <main>
         <section className="hero">
           <div className="hero-left">
@@ -75,8 +110,21 @@ export default function App() {
                 <g transform="translate(0,0)">
                   <ellipse cx="35" cy="38" rx="18" ry="8" fill="#f5d6d9" />
                   <ellipse cx="85" cy="38" rx="18" ry="8" fill="#f5d6d9" />
-                  <path d="M30 30 C45 22, 55 22, 70 30" stroke="#b76e79" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                  <circle cx="50" cy="30" r="4" fill="#fff5f7" stroke="#b76e79" strokeWidth="1.2"/>
+                  <path
+                    d="M30 30 C45 22, 55 22, 70 30"
+                    stroke="#b76e79"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  <circle
+                    cx="50"
+                    cy="30"
+                    r="4"
+                    fill="#fff5f7"
+                    stroke="#b76e79"
+                    strokeWidth="1.2"
+                  />
                 </g>
               </svg>
 
@@ -89,7 +137,9 @@ export default function App() {
             </div>
 
             <div className="hero-actions">
-              <button className="btn-primary" onClick={() => setRsvpOpen(true)}>RSVP Now</button>
+              <button className="btn-primary" onClick={() => setRsvpOpen(true)}>
+                RSVP Now
+              </button>
               <a
                 className="btn-ghost"
                 href="https://www.google.com/maps?q=Kolkata"
@@ -101,7 +151,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* ❤️ Fading Image Section */}
           <div className="hero-right">
             <div className="photo-fade">
               <img
@@ -119,6 +168,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* ❤️ Story Section */}
         <section id="story" className="story">
           <h2>Our Story</h2>
           <p className="story-text">
@@ -132,6 +182,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* 🎉 Event Section */}
         <section id="event" className="event">
           <h2>Event Details</h2>
           <div className="event-grid">
@@ -156,6 +207,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* 📸 Gallery Section */}
         <section id="gallery" className="gallery">
           <h2>Gallery</h2>
           <div className="grid">
@@ -166,28 +218,24 @@ export default function App() {
         </section>
       </main>
 
-      {/* 🎵 Hidden Background Music */}
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-        src="https://cdn.pixabay.com/download/audio/2023/05/11/audio_2e1d9b9e1e.mp3?filename=soft-piano-love-theme-145050.mp3"
-      />
+      {/* 🎵 Background Music */}
+      <audio ref={audioRef} loop preload="auto" src="/soft_wedding_music.wav" />
 
-      {/* 💖 Floating Music Button */}
+      {/* 🎵 Floating Music Button */}
       <button
-        className="music-btn"
+        className={`music-btn ${musicPlaying ? "playing" : ""}`}
         onClick={toggleMusic}
         title={musicPlaying ? "Pause Music" : "Play Music"}
       >
         {musicPlaying ? "🔇" : "🎵"}
       </button>
 
+      {/* 💖 Footer */}
       <footer className="footer">
         <p>With love — XMEN & Riya • See you soon ❤️</p>
       </footer>
 
-      {/* RSVP Modal */}
+      {/* 💌 RSVP Modal */}
       {rsvpOpen && (
         <div className="modal-backdrop" onClick={() => setRsvpOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
