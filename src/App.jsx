@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./index.css";
 
 export default function App() {
   const [rsvpOpen, setRsvpOpen] = useState(false);
   const [rsvpSent, setRsvpSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", attending: "yes", guests: 1, message: "" });
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [showBride, setShowBride] = useState(true);
+  const audioRef = useRef(null);
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    attending: "yes",
+    guests: 1,
+    message: "",
+  });
+
+  // Auto toggle between bride and groom photo every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowBride((prev) => !prev);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   function submitRsvp(e) {
     e.preventDefault();
-    // for now, we just simulate success (later integrate with Laravel backend)
     setRsvpSent(true);
     setTimeout(() => {
       setRsvpOpen(false);
@@ -17,13 +34,25 @@ export default function App() {
     }, 1600);
   }
 
+  function toggleMusic() {
+    if (!audioRef.current) return;
+    if (musicPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setMusicPlaying(!musicPlaying);
+  }
+
   return (
     <div className="page">
       <header className="nav">
         <div className="brand">
-          <span className="ring">💍</span>
+          <span className="ring" style={{ fontSize: "2.5rem" }}>💍</span>
           <div>
-            <div className="names">XMEN & Riya</div>
+            <div className="names" style={{ fontSize: "2.5rem", fontWeight: "800" }}>
+              XMEN & Riya
+            </div>
             <div className="date">December 15, 2025</div>
           </div>
         </div>
@@ -43,7 +72,6 @@ export default function App() {
 
             <div className="poem-card">
               <svg viewBox="0 0 120 60" className="hands-svg" aria-hidden>
-                {/* simple stylized hands-holding illustration */}
                 <g transform="translate(0,0)">
                   <ellipse cx="35" cy="38" rx="18" ry="8" fill="#f5d6d9" />
                   <ellipse cx="85" cy="38" rx="18" ry="8" fill="#f5d6d9" />
@@ -64,17 +92,28 @@ export default function App() {
               <button className="btn-primary" onClick={() => setRsvpOpen(true)}>RSVP Now</button>
               <a
                 className="btn-ghost"
-                href="https://www.google.com/maps?q=Kolkata" target="_blank" rel="noreferrer"
+                href="https://www.google.com/maps?q=Kolkata"
+                target="_blank"
+                rel="noreferrer"
               >
                 View on Map
               </a>
             </div>
           </div>
 
+          {/* ❤️ Fading Image Section */}
           <div className="hero-right">
-            <div className="photo-frame">
-              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=67e9ca8d0f82eb7d02f9f0b6a3e7b6b4" alt="couple" />
-              <div className="date-pill">Dec 15, 2025</div>
+            <div className="photo-fade">
+              <img
+                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop"
+                alt="bride"
+                className={`fade-img ${showBride ? "active" : ""}`}
+              />
+              <img
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop"
+                alt="groom"
+                className={`fade-img ${!showBride ? "active" : ""}`}
+              />
             </div>
             <div className="floating-flowers">🌸 🌿</div>
           </div>
@@ -120,13 +159,29 @@ export default function App() {
         <section id="gallery" className="gallery">
           <h2>Gallery</h2>
           <div className="grid">
-            {/* swap these with your own images later */}
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=7f7dd9721d7b1e7a7c8d7e1f1b9a69a8" alt="prewedding1" />
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=e6c8e3b9d4c2f8d4e9b8c3b6ec8f1c4a" alt="prewedding2" />
-            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=67e9ca8d0f82eb7d02f9f0b6a3e7b6b4" alt="prewedding3" />
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" alt="prewedding1" />
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="prewedding2" />
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop" alt="prewedding3" />
           </div>
         </section>
       </main>
+
+      {/* 🎵 Hidden Background Music */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        src="https://cdn.pixabay.com/download/audio/2023/05/11/audio_2e1d9b9e1e.mp3?filename=soft-piano-love-theme-145050.mp3"
+      />
+
+      {/* 💖 Floating Music Button */}
+      <button
+        className="music-btn"
+        onClick={toggleMusic}
+        title={musicPlaying ? "Pause Music" : "Play Music"}
+      >
+        {musicPlaying ? "🔇" : "🎵"}
+      </button>
 
       <footer className="footer">
         <p>With love — XMEN & Riya • See you soon ❤️</p>
@@ -141,30 +196,30 @@ export default function App() {
               <form onSubmit={submitRsvp} className="rsvp-form">
                 <label>
                   Name
-                  <input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} required/>
+                  <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
                 </label>
                 <label>
                   Email
-                  <input type="email" value={form.email} onChange={(e)=>setForm({...form, email: e.target.value})} required/>
+                  <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
                 </label>
                 <label>
                   Attending
-                  <select value={form.attending} onChange={(e)=>setForm({...form, attending: e.target.value})}>
+                  <select value={form.attending} onChange={(e) => setForm({ ...form, attending: e.target.value })}>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
                 </label>
                 <label>
                   Guests
-                  <input type="number" min="0" value={form.guests} onChange={(e)=>setForm({...form, guests: e.target.value})}/>
+                  <input type="number" min="0" value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} />
                 </label>
                 <label>
                   Message (optional)
-                  <textarea value={form.message} onChange={(e)=>setForm({...form, message: e.target.value})}></textarea>
+                  <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}></textarea>
                 </label>
                 <div className="modal-actions">
                   <button type="submit" className="btn-primary">Send RSVP</button>
-                  <button type="button" className="btn-outline" onClick={()=>setRsvpOpen(false)}>Cancel</button>
+                  <button type="button" className="btn-outline" onClick={() => setRsvpOpen(false)}>Cancel</button>
                 </div>
               </form>
             ) : (
