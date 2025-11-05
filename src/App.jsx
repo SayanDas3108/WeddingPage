@@ -85,7 +85,7 @@ export default function App() {
         {/* Center: Couple Names */}
         <div className="header-center">
           <span className="ring">💍</span>
-          <h1 className="couple-names">XMEN <span className="and">&</span> Riya</h1>
+          <h1 className="couple-names">Abhishek <span className="and">&</span> Riya</h1>
           <div className="subtext">Weds</div>
         </div>
 
@@ -232,7 +232,7 @@ export default function App() {
 
       {/* 💖 Footer */}
       <footer className="footer">
-        <p>With love — XMEN & Riya • See you soon ❤️</p>
+        <p>With love — Abhishek & Riya • See you soon ❤️</p>
       </footer>
 
       {/* 💌 RSVP Modal */}
