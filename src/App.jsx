@@ -107,7 +107,7 @@ export default function App() {
 
         <div className="header-center" aria-hidden>
           <span className="ring">💍</span>
-          <h1 className="couple-names">Abhishek <span className="and">&</span> Riya</h1>
+          <h1 className="couple-names">Abhishek <span className="and">&</span> Suranjana</h1>
           <div className="subtext">Weds</div>
         </div>
 
@@ -218,7 +218,7 @@ export default function App() {
         {musicPlaying ? "🔇" : "🎵"}
       </button>
 
-      <footer className="footer"><p>With love — Abhishek & Riya • See you soon ❤️</p></footer>
+      <footer className="footer"><p>With love — Abhishek & Suranjana • See you soon ❤️</p></footer>
 
       {rsvpOpen && (
         <div className="modal-backdrop" onClick={() => setRsvpOpen(false)}>
