@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500&display=swap');
+
 /* fonts loaded from index.html */
 :root{
   --rose:#b76e79;
@@ -309,4 +311,167 @@ main {
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(183, 110, 121, 0.06);
   width: 140px;             /* ensures equal item width */
+}
+/* === Family Section Styles === */
+
+.family-section {
+  background: #fffafc;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.family-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #b76e79;
+  font-family: 'Playfair Display', serif;
+}
+
+.family-grid {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.family-grid .card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(183, 110, 121, 0.15);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.family-grid .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(183, 110, 121, 0.25);
+}
+
+.family-grid h3 {
+  color: #b76e79;
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  font-family: 'Playfair Display', serif;
+  border-bottom: 2px solid #f3d6da;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+
+.family-grid p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+.contact-card {
+  background: #fff5f6;
+  border: 2px solid #f3d6da;
+}
+
+/* Bengali font styling for better readability */
+
+
+.family-grid p,
+.family-grid h3,
+.family-section h2 {
+  font-family: 'Noto Sans Bengali', 'Poppins', sans-serif;
+}
+/* === Bilingual Text Spacing & Typography Enhancements === */
+
+/* Headings (like Our Story / আমাদের গল্প) */
+h1, h2, h3 {
+  line-height: 1.5;           /* adds vertical space between English & Bengali */
+  margin-bottom: 1.5rem;      /* more breathing room below headings */
+}
+
+/* Hero section bilingual text spacing */
+.hero-title {
+  line-height: 1.4;           /* increase between EN + BN lines */
+  margin-bottom: 1.2rem;
+}
+
+/* Hero subtitle and poem */
+.hero-sub {
+  font-size: 1.1rem;
+  line-height: 1.7;           /* easier to read bilingual lines */
+  margin-bottom: 1.5rem;
+}
+
+.poem {
+  line-height: 1.9;
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+
+/* Story section bilingual text */
+.story-text {
+  line-height: 1.8;           /* spacing between English and Bengali */
+  font-size: 1.05rem;
+  margin-top: 0.8rem;
+}
+
+/* Timeline cards */
+.time-item {
+  padding: 16px 20px;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+/* Add more top and bottom padding for sections */
+.story,
+.hero {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+/* Buttons bilingual layout */
+.btn-primary,
+.btn-outline,
+.btn-ghost {
+  font-size: 1.05rem;
+  padding: 0.9rem 1.6rem;
+  line-height: 1.4;
+}
+/* === Poem bilingual side-by-side layout === */
+.poem-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;          /* wraps nicely on small screens */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.poem-column {
+  flex: 1 1 300px;          /* responsive columns */
+  max-width: 500px;
+}
+
+.poem {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  text-align: left;
+  color: #5a2a2e;           /* matches elegant tone */
+  font-weight: 400;
+}
+
+.poem-container p {
+  margin: 0;
+}
+
+/* On small screens, stack vertically */
+@media (max-width: 768px) {
+  .poem-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .poem {
+    text-align: center;
+  }
 }
